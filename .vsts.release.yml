@@ -8,7 +8,6 @@ resources:
 
 stages:
 - stage: Build
-  dependsOn: Create_Release_Branch
   jobs:
   ################################################################################
   - job: build_linux_agent_arm64
