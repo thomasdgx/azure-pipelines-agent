@@ -19,7 +19,7 @@ parameters:
   default: ''
 - name: target
   type: string
-  default: All
+  default: Linux (ARM64)
   values:
   - All
   - Windows (x64)
@@ -39,7 +39,7 @@ resources:
 
 stages:
 
-- ${{ parameters.preBuildStages }}
+#- ${{ parameters.preBuildStages }}
 
 - stage: build
   displayName: Build
@@ -159,4 +159,4 @@ stages:
         sign: ${{ parameters.sign }}
         publishArtifact: ${{ parameters.publishArtifacts }}
 
-- ${{ parameters.postBuildStages }}
+#- ${{ parameters.postBuildStages }}
