@@ -112,8 +112,7 @@ stages:
         publishArtifact: ${{ parameters.publishArtifacts }}
 
   # Linux (ARM64)
-  #- ${{ if or(eq(parameters.target, 'Linux (ARM64)'), eq(parameters.target, 'All')) }}:
-  - ${{ if eq(parameters.target, 'Linux (ARM64)') }}:
+  - ${{ if or(eq(parameters.target, 'Linux (ARM64)'), eq(parameters.target, 'All')) }}:
     - template: build-job.yml
       parameters:
         jobName: build_linux_arm64_agent
@@ -126,7 +125,7 @@ stages:
         arch: arm64
         branch: ${{ parameters.branch }}
         componentDetection: false
-        sign: false
+        sign: true
         publishArtifact: ${{ parameters.publishArtifacts }}
 
   # RHEL6 Agent (x64)
