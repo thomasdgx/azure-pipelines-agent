@@ -61,8 +61,6 @@ namespace Microsoft.VisualStudio.Services.Agent
         // store the version of the image
         public static readonly string ImageVersionVariable = "ImageVersion";
 
-        public const string ContainerMapping = "AGENT_CONTAINERMAPPING";
-
         public static class Agent
         {
             public static readonly TimeSpan ExitOnUnloadTimeout = TimeSpan.FromSeconds(30);
