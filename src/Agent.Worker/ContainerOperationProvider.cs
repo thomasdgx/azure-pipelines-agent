@@ -411,6 +411,11 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 }
             }
 
+            // Expose docker container name mapping to env
+            var containerEnv = executionContext.Variables.Get(Constants.Variables.Agent.ContainerMapping);
+            containerEnv = (containerEnv != null ? containerEnv + "," : "") + $"{container.ContainerName}:{container.ContainerDisplayName}";
+            executionContext.Variables.Set(Constants.Variables.Agent.ContainerMapping, containerEnv);
+
             if (!PlatformUtil.RunningOnWindows)
             {
                 if (container.IsJobContainer)
