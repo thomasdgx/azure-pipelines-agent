@@ -111,6 +111,15 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 await StartContainerAsync(executionContext, container);
             }
 
+            // Build JSON to expose docker container name mapping to env
+            var containerMapping = new JObject();
+            foreach (var container in containers) {
+                var containerInfo = new JObject();
+                containerInfo["id"] = container.ContainerId;
+                containerMapping[container.ContainerName] = containerInfo;
+            }
+            executionContext.Variables.Set(Constants.Variables.Agent.ContainerMapping, containerMapping.ToString());
+
             foreach (var container in containers.Where(c => !c.IsJobContainer))
             {
                 await ContainerHealthcheck(executionContext, container);
@@ -410,14 +419,6 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                         $"{port.HostPort}");
                 }
             }
-
-            // Build JSON to expose docker container name mapping to env
-            var containerEnv = executionContext.Variables.Get(Constants.Variables.Agent.ContainerMapping);
-            var containerMapping = containerEnv != null ? JObject.Parse(containerEnv) : new JObject();
-            var containerInfo = new JObject();
-            containerInfo["id"] = container.ContainerId;
-            containerMapping[container.ContainerName] = containerInfo;
-            executionContext.Variables.Set(Constants.Variables.Agent.ContainerMapping, containerMapping.ToString());
 
             if (!PlatformUtil.RunningOnWindows)
             {
