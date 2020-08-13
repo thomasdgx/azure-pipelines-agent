@@ -478,7 +478,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                     // This allows similar jobs in the same definition to reuse that workspace and other jobs to have their own.
                     JobSettings[WellKnownJobSettings.WorkspaceIdentifier] = GetWorkspaceIdentifier(message);
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
                     Trace.Warning($"Unable to generate workspace ID: {ex.Message}");
                 }
