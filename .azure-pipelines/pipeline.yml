@@ -82,25 +82,6 @@ stages:
         publishArtifacts: ${{ parameters.publishArtifacts }}
         buildAlternatePackage: ${{ parameters.buildAlternatePackage }}
 
-    - ${{ if parameters.buildAlternatePackage }}:
-      - template: build-job.yml
-        parameters:
-          jobName: build_windows_x64_alternate
-          displayName: Windows Agent (x64) (without Node 6)
-          pool:
-            vmImage: vs2017-win2016
-          os: win
-          arch: x64
-          branch: ${{ parameters.branch }}
-          codeCoverage: true
-          componentDetection: ${{ parameters.componentDetection }}
-          unitTests: false
-          functionalTests: false
-          sign: ${{ parameters.sign }}
-          verifySigning: ${{ parameters.sign }}
-          publishArtifact: ${{ parameters.publishArtifacts }}
-          packageType: pipelines-agent
-
   # Windows (x86)
   - ${{ if parameters.win_x86 }}:
     - template: build-jobs.yml
