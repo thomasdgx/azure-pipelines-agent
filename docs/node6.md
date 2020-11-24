@@ -6,4 +6,4 @@ Node 6 has long since passed out of the upstream maintenance window, however man
 
 For these reasons, packages of the agent (named vsts-agent-*) that include Node 6 will continue to be made available for the forseeable future. Node 6 dependent tasks will continue be supported in hosted pools.
 
-However, because Node 6 is no longer maintained, many customers do not want it installed on their systems. For customers who know for sure they are not using Node 6 dependent tasks, we provide alternate packages (pipelines-agent-*) that only include Node 10. In the future, once all officially supported tasks have been updated for Node 10, these packages will because the primarily recommended ones.
+However, because Node 6 is no longer maintained, many customers do not want it installed on their systems. For customers who know for sure they are not using Node 6 dependent tasks, we provide alternate packages (pipelines-agent-*) that only include Node 10. In the future, once all officially supported tasks have been updated for Node 10, these packages will become the primarily recommended ones.
