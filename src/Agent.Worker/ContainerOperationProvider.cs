@@ -311,8 +311,6 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 }
 
                 container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Temp), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Temp))));
-                container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Tasks), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Tasks)),
-                    readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Tasks)));
             }
             else
             {
@@ -320,6 +318,9 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                     readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Work)));
             }
 
+            container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Tasks), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Tasks)),
+                readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Tasks)));
+            
             container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Tools), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Tools)),
                 readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Tools)));
 
