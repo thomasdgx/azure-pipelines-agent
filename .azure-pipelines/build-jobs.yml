@@ -76,7 +76,7 @@ jobs:
       unitTests: ${{ parameters.unitTests }}
       functionalTests: ${{ parameters.functionalTests }}
       sign: ${{ parameters.sign }}
-      verifySigning: ${{ parameters.sign }}
+      verifySigning: ${{ parameters.verifySigning }}
       publishArtifact: ${{ parameters.publishArtifacts }}
       packageType: agent
 
@@ -96,6 +96,6 @@ jobs:
         unitTests: false
         functionalTests: false
         sign: ${{ parameters.sign }}
-        verifySigning: ${{ parameters.sign }}
+        verifySigning: ${{ parameters.verifySigning }}
         publishArtifact: ${{ parameters.publishArtifacts }}
         packageType: pipelines-agent
