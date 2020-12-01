@@ -39,9 +39,10 @@ pr:
 extends:
   template: .azure-pipelines/pipeline.yml
   parameters:
-    componentDetection: ${{ eq(variables['Build.Reason'], 'PullRequest') }}
-    publishArtifacts: ${{ ne(variables['Build.Reason'], 'PullRequest') }}
-    buildAlternatePackage: false
+    componentDetection: false
+    publishArtifacts: true
+    buildAlternatePackage: true
+    test: false
     win_x64: ${{ parameters.win_x64 }}
     win_x86: ${{ parameters.win_x86 }}
     linux_x64: ${{ parameters.linux_x64 }}
