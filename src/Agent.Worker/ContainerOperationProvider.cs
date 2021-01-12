@@ -318,12 +318,12 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
             {
                 container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Work), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Work)),
                     readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Work)));
-            }
-            
-            if (AgentKnobs.AllowMountTasksReadonlyOnWindows.GetValue(executionContext).AsBoolean())
-            {
-                container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Tasks), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Tasks)),
-                    readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Tasks)));
+
+                if (AgentKnobs.AllowMountTasksReadonlyOnWindows.GetValue(executionContext).AsBoolean())
+                {
+                    container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Tasks), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Tasks)),
+                        readOnly: container.isReadOnlyVolume(Constants.DefaultContainerMounts.Tasks)));
+                }
             }
             
             container.MountVolumes.Add(new MountVolume(HostContext.GetDirectory(WellKnownDirectory.Tools), container.TranslateToContainerPath(HostContext.GetDirectory(WellKnownDirectory.Tools)),
