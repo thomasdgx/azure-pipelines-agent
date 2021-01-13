@@ -31,10 +31,12 @@ stages:
 
           # Upload agent packages to Azure blob storage and refresh Azure CDN
           - powershell: |
-              Write-Host "HKCU"
-              Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\" -Recurse -Name
-              Write-Host "registry"
-              Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\" -Recurse -Name
+              Write-Host "HKLM"
+              Get-ChildItem -Path "HKLM:\SOFTWARE\Microsoft\" -Recurse -Name
+              # Write-Host "HKCU"
+              # Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\" -Recurse -Name
+              # Write-Host "registry"
+              # Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\" -Recurse -Name
 
 
 
