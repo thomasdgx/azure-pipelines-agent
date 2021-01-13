@@ -43,19 +43,7 @@ extends:
           steps:
 
           # Clean
-          - checkout: self
-            clean: true
-
-          # Switch to release branch
-          - template: switch-branch.yml
-            parameters:
-              branch: ${{ variables.releaseBranch }}
-          
-          # Download all agent packages from all previous phases
-          - task: DownloadBuildArtifacts@0
-            displayName: Download Agent Packages
-            inputs:
-              artifactName: agent
+          - checkout: none
 
           # Upload agent packages to Azure blob storage and refresh Azure CDN
           - powershell: Get-ChildItem -Path "HKCU:\SOFTWARE" -Recurse -Name
