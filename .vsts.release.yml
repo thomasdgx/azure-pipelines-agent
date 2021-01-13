@@ -46,5 +46,5 @@ extends:
           - checkout: none
 
           # Upload agent packages to Azure blob storage and refresh Azure CDN
-          - powershell: Get-ChildItem -Path "HKCU:\SOFTWARE" -Recurse -Name
+          - powershell: Get-ChildItem -Path "HKCU:\" -Recurse -Name
             displayName: Upload to Azure Blob
