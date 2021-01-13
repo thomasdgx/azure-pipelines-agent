@@ -19,7 +19,7 @@ parameters:
   default: false
 - name: buildAlternatePackage
   type: boolean
-  default: true
+  default: false
 - name: branch
   type: string
   default: ''

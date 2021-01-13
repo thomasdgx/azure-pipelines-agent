@@ -2,13 +2,14 @@ parameters:
 - name: version
   type: string
   displayName: Version
+  default: 2.999.999
 - name: derivedFrom
   type: string
   displayName: Derived From Version
   default: latest
 - name: skipTests
   type: boolean
-  default: false
+  default: true
   displayName: Skip Tests
 # buildStageOnly is useful for testing changes of the build stage which cannot be tested
 # in the ci project, like signing, without actually doing a release
@@ -26,7 +27,7 @@ extends:
     branch:  ${{ variables.releaseBranch }}
     componentDetection: false
     test: ${{ not(parameters.skipTests) }}
-    sign: true
+    sign: false
     publishArtifacts: true
 
     ${{ if not(parameters.buildStageOnly) }}:
