@@ -30,31 +30,6 @@ extends:
     publishArtifacts: true
 
     ${{ if not(parameters.buildStageOnly) }}:
-      preBuildStages:
-      - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-        - stage: Create_Release_Branch
-          displayName: Create Release Branch
-          jobs:
-          ################################################################################
-          - job: Create_Release_Branch
-          ################################################################################
-            displayName: Create Release Branch
-            pool:
-              vmImage: ubuntu-18.04
-
-            steps:
-            - checkout: self
-
-            - script: |
-                cd release
-                npm install
-                node createReleaseBranch.js ${{ parameters.version }} --derivedFrom=${{ parameters.derivedFrom }}
-              env:
-                EDITOR: cat
-                PAT: $(GithubToken)
-              displayName: Push release branch to GitHub
-
-    ${{ if not(parameters.buildStageOnly) }}:
       postBuildStages:
       - stage: Release
         jobs:
@@ -63,7 +38,7 @@ extends:
         ################################################################################
           displayName: Publish Agents (Windows/Linux/OSX)
           pool:
-            name: ProductionRMAgents
+            name: AzDevProdRMAgents
           steps:
 
           # Clean
@@ -109,68 +84,3 @@ extends:
               Write-Host "Force Refresh Azure CDN Cache"
               Publish-AzureRmCdnEndpointContent -EndpointName vstsagentpackage -ProfileName vstsagentpackage -ResourceGroupName vstsagentpackage -LoadContent $uploadFiles
             displayName: Upload to Azure Blob
-
-          # Create agent release on Github
-          - powershell: |
-              Write-Host "Creating github release."
-              $releaseNotes = [System.IO.File]::ReadAllText("$(Build.SourcesDirectory)\releaseNote.md").Replace("<AGENT_VERSION>","${{ parameters.version }}")
-              $releaseData = @{
-                tag_name = "v${{ parameters.version }}";
-                target_commitish = "$(Build.SourceVersion)";
-                name = "v${{ parameters.version }}";
-                body = $releaseNotes;
-                draft = $false;
-                prerelease = $true;
-              }
-              $releaseParams = @{
-                Uri = "https://api.github.com/repos/Microsoft/azure-pipelines-agent/releases";
-                Method = 'POST';
-                Headers = @{
-                  Authorization = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("vsts:$(GithubToken)"));
-                }
-                ContentType = 'application/json';
-                Body = (ConvertTo-Json $releaseData -Compress)
-              }
-              [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-              $releaseCreated = Invoke-RestMethod @releaseParams
-              Write-Host $releaseCreated
-              $releaseId = $releaseCreated.id
-              $assets = [System.IO.File]::ReadAllText("$(Build.SourcesDirectory)\assets.json").Replace("<AGENT_VERSION>","${{ parameters.version }}")
-              $assetsParams = @{
-                Uri = "https://uploads.github.com/repos/Microsoft/azure-pipelines-agent/releases/$releaseId/assets?name=assets.json"
-                Method = 'POST';
-                Headers = @{
-                  Authorization = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("vsts:$(GithubToken)"));
-                }
-                ContentType = 'application/octet-stream';
-                Body = [system.Text.Encoding]::UTF8.GetBytes($assets)
-              }
-              Invoke-RestMethod @assetsParams
-            displayName: Create agent release on Github
-
-      - stage: CreatePR
-        jobs:
-        ################################################################################
-        - job: create_ado_pr
-        ################################################################################
-          displayName: Create PR in AzureDevOps
-          pool:
-            vmImage: ubuntu-18.04
-
-          steps:
-          - checkout: self
-
-          - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-            - script: git checkout ${{ variables.releaseBranch }}
-              displayName: Checkout release branch
-
-          - bash: |
-              set -x
-              cd release
-              npm install
-              ls
-              node createAdoPr.js ${{ parameters.version }}
-            displayName: Create PR in AzureDevOps
-            env:
-              USER: $(User)
-              PAT: $(AdoPAT)
