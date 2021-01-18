@@ -384,7 +384,10 @@ namespace Agent.Plugins.Repository
                 }
 
                 // Unshelve.
-                await tf.UnshelveAsync(shelveset: shelvesetName, false);
+                var allowUnmapped = StringUtil.ConvertToBoolean(executionContext.Variables.GetValueOrDefault("build.tfvc.allowunmapped")?.Value ?? "true");
+                executionContext.Debug($"allowUnmapped is set to : '{allowUnmapped}'");
+
+                await tf.UnshelveAsync(shelveset: shelvesetName, failOnNonZeroExitCode: !allowUnmapped);
 
                 // Ensure we undo pending changes for shelveset build at the end.
                 executionContext.SetTaskVariable("UndoShelvesetPendingChanges", bool.TrueString);
