@@ -257,11 +257,11 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker.TestResults
             return publishOptions;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA2000:Dispose objects before losing scope", MessageId = "connection")]
         private async Task PublishTestRunDataAsync(String teamProject, TestRunContext testRunContext)
         {
             bool isTestRunOutcomeFailed = false;
 
-            // Do not dispose the connection, this leads to sporadic exceptions
             var connection = WorkerUtilities.GetVssConnection(_executionContext);
             var featureFlagService = _executionContext.GetHostContext().GetService<IFeatureFlagService>();
             featureFlagService.InitializeFeatureService(_executionContext, connection);
